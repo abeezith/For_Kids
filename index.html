@@ -1,684 +1,22 @@
-Exit code: 0
-Wall time: 0.7 seconds
-Total output lines: 1311
-Output:
 <!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="A Class 6 practice quiz for school-level Atal Tinkering Lab selection.">
-  <title>ATL Explorer â€” Class 6 Practice Quiz</title>
-  <style>
-    :root {
-      --ink: #183153;
-      --muted: #5f7087;
-      --paper: #fffdf8;
-      --cream: #fff6da;
-      --blue: #1f6feb;
-      --blue-dark: #1554b3;
-      --orange: #ff9f1c;
-      --green: #16865c;
-      --red: #cf3c4f;
-      --line: #dce5ef;
-      --shadow: 0 18px 50px rgba(31, 75, 120, .13);
-      --radius: 22px;
-    }
-
-    * { box-sizing: border-box; }
-
-    body {
-      margin: 0;
-      color: var(--ink);
-      background:
-        radial-gradient(circle at 8% 4%, rgba(255, 159, 28, .20), transparent 25rem),
-        radial-gradient(circle at 94% 10%, rgba(31, 111, 235, .17), transparent 28rem),
-        #f4f9ff;
-      font-family: Inter, ui-rounded, "Segoe UI", system-ui, -apple-system, sans-serif;
-      line-height: 1.5;
-    }
-
-    button, input { font: inherit; }
-    button { cursor: pointer; }
-
-    .shell {
-      width: min(1100px, calc(100% - 28px));
-      margin: 0 auto;
-    }
-
-    .hero {
-      padding: 54px 0 30px;
-      display: grid;
-      grid-template-columns: 1.2fr .8fr;
-      gap: 28px;
-      align-items: center;
-    }
-
-    .eyebrow {
-      display: inline-flex;
-      gap: 8px;
-      align-items: center;
-      margin: 0 0 10px;
-      padding: 7px 12px;
-      border: 1px solid #bcd3f7;
-      border-radius: 999px;
-      color: var(--blue-dark);
-      background: rgba(255,255,255,.72);
-      font-weight: 800;
-      font-size: .82rem;
-      letter-spacing: .06em;
-      text-transform: uppercase;
-    }
-
-    h1 {
-      margin: 0;
-      max-width: 760px;
-      font-size: clamp(2.3rem, 6vw, 5.2rem);
-      line-height: .98;
-      letter-spacing: -.055em;
-    }
-
-    .highlight { color: var(--blue); }
-
-    .lede {
-      max-width: 700px;
-      margin: 20px 0 0;
-      color: var(--muted);
-      font-size: 1.08rem;
-    }
-
-    .hero-card {
-      position: relative;
-      min-height: 265px;
-      display: grid;
-      place-items: center;
-      overflow: hidden;
-      border: 1px solid rgba(255,255,255,.8);
-      border-radius: 34px;
-      background: linear-gradient(140deg, #1f6feb, #7048e8);
-      box-shadow: var(--shadow);
-      color: white;
-    }
-
-    .bulb {
-      font-size: 7.2rem;
-      filter: drop-shadow(0 12px 15px rgba(0,0,0,.22));
-      transform: rotate(-5deg);
-    }
-
-    .orbit {
-      position: absolute;
-      width: 210px;
-      height: 210px;
-      border: 2px dashed rgba(255,255,255,.55);
-      border-radius: 50%;
-      animation: spin 18s linear infinite;
-    }
-
-    .orbit::before, .orbit::after {
-      content: "";
-      position: absolute;
-      width: 18px;
-      height: 18px;
-      border-radius: 50%;
-      background: var(--orange);
-      box-shadow: 0 0 0 6px rgba(255,255,255,.18);
-    }
-
-    .orbit::before { top: 12px; left: 32px; }
-    .orbit::after { right: 8px; bottom: 48px; background: #74e0b5; }
-
-    @keyframes spin { to { transform: rotate(360deg); } }
-    @media (prefers-reduced-motion: reduce) { .orbit { animation: none; } }
-
-    .notice {
-      margin: 10px 0 26px;
-      padding: 16px 18px;
-      border-left: 5px solid var(--orange);
-      border-radius: 12px;
-      background: #fff8df;
-      color: #624912;
-      font-size: .95rem;
-    }
-
-    .framework {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 12px;
-      margin-bottom: 28px;
-    }
-
-    .skill {
-      padding: 18px 15px;
-      border: 1px solid rgba(25, 76, 128, .11);
-      border-radius: 18px;
-      background: rgba(255,255,255,.82);
-      box-shadow: 0 8px 24px rgba(48, 90, 130, .07);
-    }
-
-    .skill-icon { font-size: 1.65rem; }
-    .skill strong { display: block; margin: 6px 0 2px; }
-    .skill small { color: var(--muted); }
-
-    .panel {
-      margin-bottom: 44px;
-      overflow: hidden;
-      border: 1px solid rgba(25, 76, 128, .12);
-      border-radius: var(--radius);
-      background: var(--paper);
-      box-shadow: var(--shadow);
-    }
-
-    .quiz-head {
-      padding: 22px 24px 18px;
-      background: linear-gradient(120deg, #173c70, #1f6feb);
-      color: white;
-    }
-
-    .quiz-title-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: end;
-      gap: 16px;
-    }
-
-    .quiz-head h2 { margin: 0; font-size: 1.45rem; }
-    .quiz-head p { margin: 4px 0 0; color: #dceaff; font-size: .9rem; }
-
-    .score-chip {
-      flex: 0 0 auto;
-      padding: 7px 11px;
-      border: 1px solid rgba(255,255,255,.38);
-      border-radius: 999px;
-      background: rgba(255,255,255,.12);
-      font-weight: 800;
-      font-size: .9rem;
-    }
-
-    .progress-track {
-      height: 8px;
-      margin-top: 18px;
-      overflow: hidden;
-      border-radius: 999px;
-      background: rgba(255,255,255,.23);
-    }
-
-    .progress-bar {
-      width: 0;
-      height: 100%;
-      border-radius: inherit;
-      background: #ffd166;
-      transition: width .25s ease;
-    }
-
-    .quiz-body { padding: 26px; }
-
-    .start-screen {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 28px;
-      align-items: start;
-    }
-
-    .start-screen h3 { margin-top: 0; font-size: 1.55rem; }
-
-    .how-list {
-      padding: 0;
-      margin: 18px 0 0;
-      list-style: none;
-    }
-
-    .how-list li {
-      display: flex;
-      gap: 10px;
-      margin: 10px 0;
-      color: var(--muted);
-    }
-
-    .tick {
-      display: grid;
-      flex: 0 0 24px;
-      width: 24px;
-      height: 24px;
-      place-items: center;
-      border-radius: 50%;
-      color: white;
-      background: var(--green);
-      font-size: .76rem;
-      font-weight: 900;
-    }
-
-    .setup-card {
-      padding: 20px;
-      border: 1px solid #e0e7ef;
-      border-radius: 18px;
-      background: #f7fbff;
-    }
-
-    label[for="studentName"] {
-      display: block;
-      margin-bottom: 7px;
-      font-weight: 800;
-    }
-
-    #studentName {
-      width: 100%;
-      padding: 12px 14px;
-      border: 2px solid #cad8e7;
-      border-radius: 12px;
-      color: var(--ink);
-      background: white;
-      outline: none;
-    }
-
-    #studentName:focus { border-color: var(--blue); box-shadow: 0 0 0 4px rgba(31,111,235,.12); }
-
-    .mode-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      margin: 15px 0 18px;
-    }
-
-    .mode-option input { position: absolute; opacity: 0; pointer-events: none; }
-    .mode-option span {
-      display: block;
-      padding: 12px;
-      border: 2px solid #d9e3ed;
-      border-radius: 12px;
-      background: white;
-      text-align: center;
-      font-weight: 800;
-    }
-
-    .mode-option input:checked + span {
-      border-color: var(--blue);
-      color: var(--blue-dark);
-      background: #eaf3ff;
-    }
-
-    .primary, .secondary {
-      min-height: 46px;
-      padding: 11px 18px;
-      border-radius: 12px;
-      border: 0;
-      font-weight: 900;
-    }
-
-    .primary {
-      color: white;
-      background: var(--blue);
-      box-shadow: 0 8px 18px rgba(31,111,235,.25);
-    }
-
-    .primary:hover { background: var(--blue-dark); transform: translateY(-1px); }
-    .secondary { color: var(--blue-dark); background: #eaf3ff; }
-    .secondary:hover { background: #dbeaff; }
-    .full { width: 100%; }
-
-    .question-meta {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      margin-bottom: 10px;
-    }
-
-    .category {
-      display: inline-block;
-      padding: 5px 9px;
-      border-radius: 999px;
-      color: #584009;
-      background: #fff0b8;
-      font-size: .78rem;
-      font-weight: 900;
-      letter-spacing: .03em;
-      text-transform: uppercase;
-    }
-
-    .question-count { color: var(--muted); font-weight: 800; font-size: .86rem; }
-
-    #questionText {
-      margin: 8px 0 20px;
-      font-size: clamp(1.25rem, 3vw, 1.75rem);
-      line-height: 1.28;
-    }
-
-    .options { display: grid; gap: 11px; }
-
-    .option {
-      width: 100%;
-      display: grid;
-      grid-template-columns: 38px 1fr;
-      gap: 12px;
-      align-items: center;
-      padding: 12px 14px;
-      border: 2px solid #dce5ee;
-      border-radius: 14px;
-      color: var(--ink);
-      background: white;
-      text-align: left;
-    }
-
-    .option:hover:not(:disabled) { border-color: #8db9f6; background: #f4f9ff; }
-
-    .option-letter {
-      display: grid;
-      width: 34px;
-      height: 34px;
-      place-items: center;
-      border-radius: 10px;
-      color: var(--blue-dark);
-      background: #eaf3ff;
-      font-weight: 900;
-    }
-
-    .option.selected { border-color: var(--blue); background: #eef6ff; }
-    .option.correct { border-color: var(--green); background: #eaf9f2; }
-    .option.correct .option-letter { color: white; background: var(--green); }
-    .option.wrong { border-color: var(--red); background: #fff0f2; }
-    .option.wrong .option-letter { color: white; background: var(--red); }
-
-    .feedback {
-      margin-top: 16px;
-      padding: 14px 16px;
-      border-radius: 12px;
-      background: #f0f6fc;
-      color: #39516b;
-    }
-
-    .feedback strong { color: var(--ink); }
-
-    .question-actions {
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      margin-top: 20px;
-    }
-
-    .result-top {
-      display: grid;
-      grid-template-columns: auto 1fr;
-      gap: 24px;
-      align-items: center;
-    }
-
-    .score-ring {
-      display: grid;
-      width: 150px;
-      height: 150px;
-      place-items: center;
-      border-radius: 50%;
-      background: conic-gradient(var(--green) var(--score-angle, 0deg), #dfe9ef 0);
-      box-shadow: inset 0 0 0 13px var(--paper);
-      text-align: center;
-    }
-
-    .score-ring b { display: block; font-size: 2rem; line-height: 1; }
-    .score-ring small { color: var(--muted); font-weight: 800; }
-    #resultTitle { margin: 0 0 6px; font-size: 1.8rem; }
-    #resultMessage { margin: 0; color: var(--muted); }
-
-    .breakdown {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 9px;
-      margin: 25px 0;
-    }
-
-    .break-item {
-      padding: 12px 8px;
-      border: 1px solid var(--line);
-      border-radius: 12px;
-      background: #f8fbfe;
-      text-align: center;
-    }
-
-    .break-item b { display: block; font-size: 1.1rem; }
-    .break-item small { color: var(--muted); font-size: .72rem; }
-
-    .result-actions { display: flex; flex-wrap: wrap; gap: 10px; }
-
-    .course {
-      margin-bottom: 28px;
-      overflow: hidden;
-      border: 1px solid rgba(25, 76, 128, .12);
-      border-radius: var(--radius);
-      background: white;
-      box-shadow: var(--shadow);
-    }
-
-    .course-intro {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 24px;
-      align-items: center;
-      padding: 26px;
-      color: white;
-      background: linear-gradient(125deg, #6b3fd6, #1f6feb);
-    }
-
-    .course-kicker {
-      margin: 0 0 4px;
-      color: #ffe28a;
-      font-size: .78rem;
-      font-weight: 900;
-      letter-spacing: .08em;
-      text-transform: uppercase;
-    }
-
-    .course-intro h2 { margin: 0; font-size: clamp(1.55rem, 4vw, 2.2rem); }
-    .course-intro p { max-width: 720px; margin: 8px 0 0; color: #e6efff; }
-
-    .course-time {
-      display: grid;
-      width: 104px;
-      height: 104px;
-      place-items: center;
-      border: 2px solid rgba(255,255,255,.55);
-      border-radius: 50%;
-      background: rgba(255,255,255,.12);
-      text-align: center;
-    }
-
-    .course-time b { display: block; font-size: 1.55rem; line-height: 1; }
-    .course-time small { color: #e6efff; }
-
-    .course-progress {
-      padding: 18px 24px;
-      border-bottom: 1px solid var(--line);
-      background: #f8fbff;
-    }
-
-    .course-progress-row {
-      display: flex;
-      justify-content: space-between;
-      gap: 16px;
-      margin-bottom: 8px;
-      font-size: .88rem;
-      font-weight: 800;
-    }
-
-    .course-progress-row span:last-child { color: var(--blue-dark); }
-    .course-progress-track {
-      height: 10px;
-      overflow: hidden;
-      border-radius: 999px;
-      background: #dce7f2;
-    }
-
-    .course-progress-bar {
-      width: 0;
-      height: 100%;
-      border-radius: inherit;
-      background: linear-gradient(90deg, var(--orange), #ffd166);
-      transition: width .25s ease;
-    }
-
-    .lessons { padding: 16px 22px 22px; }
-
-    .lesson {
-      margin: 10px 0;
-      overflow: hidden;
-      border: 1px solid var(--line);
-      border-radius: 15px;
-      background: var(--paper);
-    }
-
-    .lesson[open] { border-color: #a8c7ef; box-shadow: 0 7px 20px rgba(31,111,235,.08); }
-
-    .lesson summary {
-      display: grid;
-      grid-template-columns: 42px 1fr auto;
-      gap: 12px;
-      align-items: center;
-      padding: 15px;
-      cursor: pointer;
-      list-style: none;
-      font-weight: 900;
-    }
-
-    .lesson summary::-webkit-details-marker { display: none; }
-    .lesson-number {
-      display: grid;
-      width: 38px;
-      height: 38px;
-      place-items: center;
-      border-radius: 11px;
-      color: white;
-      background: var(--blue);
-    }
-
-    .lesson.done .lesson-number { background: var(--green); }
-    .lesson.done .lesson-number::after { content: "âœ“"; }
-    .lesson.done .lesson-number span { display: none; }
-    .lesson-title small { display: block; color: var(--muted); font-weight: 600; }
-    .lesson-minutes {
-      padding: 5px 9px;
-      border-radius: 999px;
-      color: #624912;
-      background: #fff0b8;
-      font-size: .78rem;
-    }
-
-    .lesson-body {
-      padding: 2px 20px 20px 69px;
-      color: #41566e;
-    }
-
-    .lesson-body h4 { margin: 13px 0 5px; color: var(--ink); }
-    .lesson-body ul { margin: 7px 0 12px; padding-left: 20px; }
-    .lesson-body li { margin: 5px 0; }
-
-    .remember, .mini-task, .quick-check {
-      margin: 12px 0;
-      padding: 12px 14px;
-      border-radius: 11px;
-    }
-
-    .remember { border-left: 4px solid var(--blue); background: #edf5ff; }
-    .mini-task { border-left: 4px solid var(--orange); background: #fff8df; }
-    .quick-check { border-left: 4px solid var(--green); background: #edf9f4; }
-    .quick-answer { margin-top: 8px; color: #176443; font-weight: 700; }
-    .reveal {
-      margin-top: 8px;
-      padding: 6px 10px;
-      border: 1px solid #9bcfba;
-      border-radius: 8px;
-      color: #176443;
-      background: white;
-      font-size: .84rem;
-      font-weight: 800;
-    }
-
-    .complete-lesson { margin-top: 4px; }
-
-    .course-finish {
-      display: none;
-      margin-top: 16px;
-      padding: 16px;
-      border: 2px solid #80caae;
-      border-radius: 13px;
-      background: #e9f9f2;
-      color: #175d43;
-      text-align: center;
-      font-weight: 800;
-    }
-
-    .course-finish.show { display: block; }
-
-    .tips {
-      margin: 0 0 44px;
-      padding: 24px;
-      border-radius: var(--radius);
-      background: #173c70;
-      color: white;
-    }
-
-    .tips h2 { margin-top: 0; }
-    .tip-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
-    .tip {
-      padding: 15px;
-      border-radius: 14px;
-      background: rgba(255,255,255,.1);
-    }
-    .tip strong { display: block; margin-bottom: 4px; color: #ffd166; }
-    .tip span { color: #dceaff; font-size: .9rem; }
-
-    footer {
-      padding: 0 0 36px;
-      color: var(--muted);
-      text-align: center;
-      font-size: .84rem;
-    }
-
-    .hidden { display: none !important; }
-
-    @media (max-width: 800px) {
-      .hero, .start-screen { grid-template-columns: 1fr; }
-      .hero { padding-top: 32px; }
-      .hero-card { min-height: 210px; }
-      .framework { grid-template-columns: repeat(2, 1fr); }
-      .framework .skill:last-child { grid-column: 1 / -1; }
-      .breakdown { grid-template-columns: repeat(2, 1fr); }
-      .tip-grid { grid-template-columns: 1fr; }
-      .course-intro { grid-template-columns: 1fr; }
-      .course-time { width: auto; height: auto; padding: 10px 16px; border-radius: 14px; }
-    }
-
-    @media (max-width: 520px) {
-      .shell { width: min(100% - 18px, 1100px); }
-      .quiz-body, .quiz-head { padding: 18px; }
-      .quiz-title-row { align-items: start; }
-      .result-top { grid-template-columns: 1fr; text-align: center; }
-      .score-ring { margin: 0 auto; }
-      .question-actions { flex-direction: column-reverse; }
-      .question-actions button { width: 100%; }
-      .lessons { padding: 10px; }
-      .lesson summary { grid-template-columns: 38px 1fr; }
-      .lesson-minutes { grid-column: 2; justify-self: start; }
-      .lesson-body { padding: 2px 14px 16px; }
-    }
-
-    @media print {
-      body { background: white; }
-      .hero-card, .framework, .notice, .tips, .quiz-head, .start-screen, .question-screen,
-      .result-actions, footer { display: none !important; }
-      .panel { box-shadow: none; border: 0; }
-      .result-screen { display: block !important; }
-    }
-  </style>
+  <title>ATL Explorer — Class 6 Practice Quiz</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <header class="shell hero">
     <div>
-      <p class="eyebrow">ðŸ”§ Class 6 Â· CBSE Â· Practice Lab</p>
+      <p class="eyebrow">🔧 Class 6 · CBSE · Practice Lab</p>
       <h1>Think. Tinker. <span class="highlight">Solve.</span></h1>
-      <p class="lede">An ATL-style practice challenge for young makers. Use science, logic, empathy and creativity to solve everyday problemsâ€”exactly the habits a tinkerer needs.</p>
+      <p class="lede">An ATL-style practice challenge for young makers. Use science, logic, empathy and creativity to solve everyday problems—exactly the habits a tinkerer needs.</p>
     </div>
     <div class="hero-card" aria-hidden="true">
       <div class="orbit"></div>
-      <div class="bulb">ðŸ’¡</div>
+      <div class="bulb">💡</div>
     </div>
   </header>
 
@@ -688,11 +26,11 @@ Output:
     </aside>
 
     <section class="framework" aria-label="Preparation framework">
-      <article class="skill"><span class="skill-icon">ðŸ”¬</span><strong>Science sense</strong><small>Observe, predict and explain</small></article>
-      <article class="skill"><span class="skill-icon">ðŸ§©</span><strong>Logical thinking</strong><small>Patterns, sequences and reasoning</small></article>
-      <article class="skill"><span class="skill-icon">ðŸ«¶</span><strong>Design thinking</strong><small>Understand people before building</small></article>
-      <article class="skill"><span class="skill-icon">ðŸ’»</span><strong>Computing</strong><small>Algorithms, sensors and debugging</small></article>
-      <article class="skill"><span class="skill-icon">ðŸ› ï¸</span><strong>Maker mindset</strong><small>Try, test, learn and improve</small></article>
+      <article class="skill"><span class="skill-icon">🔬</span><strong>Science sense</strong><small>Observe, predict and explain</small></article>
+      <article class="skill"><span class="skill-icon">🧩</span><strong>Logical thinking</strong><small>Patterns, sequences and reasoning</small></article>
+      <article class="skill"><span class="skill-icon">🫶</span><strong>Design thinking</strong><small>Understand people before building</small></article>
+      <article class="skill"><span class="skill-icon">💻</span><strong>Computing</strong><small>Algorithms, sensors and debugging</small></article>
+      <article class="skill"><span class="skill-icon">🛠️</span><strong>Maker mindset</strong><small>Try, test, learn and improve</small></article>
     </section>
 
     <section class="course" aria-labelledby="courseHeading">
@@ -720,283 +58,240 @@ Output:
             <span class="lesson-minutes">5 min</span>
           </summary>
           <div class="lesson-body">
-            <p>A tinkere…9075 tokens truncated…drawing with movable button labels","A speech about batteries","A list of unrelated inventions"], a:1, e:"A low-cost paper interface can quickly test whether users understand and can reach the controls."},
-      {c:"Design Thinking", q:"What does empathy mean in design?", o:["Feeling sorry for every user","Understanding users' experiences, needs and constraints","Giving users your favourite solution","Avoiding all questions"], a:1, e:"Design empathy means learning how people experience a situation so the solution fits their real needs."},
-      {c:"Design Thinking", q:"A hand-washing reminder is effective but uses too much water. Which improvement is best?", o:["Remove hand washing","Add controlled flow or automatic shut-off","Keep the tap open longer","Hide the water use"], a:1, e:"A controlled flow preserves hygiene while reducing waste."},
-      {c:"Design Thinking", q:"What is iteration?", o:["Building once and refusing changes","Repeating a cycle of testing and improvement","Decorating before understanding the problem","Copying another project word for word"], a:1, e:"Iteration is the repeated process of making, testing, learning and improving."},
-      {c:"Design Thinking", q:"Two users need opposite features. What is a sensible next step?", o:["Ignore both","Find out why, then test adjustable or separate options","Choose randomly","Build the most complicated version"], a:1, e:"Understanding the reason behind each need can reveal a flexible design or distinct use cases."},
-      {c:"Design Thinking", q:"Which feedback is most actionable?", o:["It is bad","I could not read the display outdoors because of glare","Make it awesome","I don't know"], a:1, e:"Specific feedback describes what happened, where it happened and why it was difficult."},
+            <p>A tinkerer notices how things work, asks questions, tries a small idea and learns from what happens. The goal is not to know every answer—it is to find a sensible way to discover the answer.</p>
+            <div class="remember"><strong>Maker loop:</strong> Notice → Ask → Imagine → Make → Test → Improve. A prototype that fails safely is still useful because it gives evidence.</div>
+            <div class="mini-task"><strong>60-second task:</strong> Look at a water bottle. Write down three questions about it beginning with “Why…?”, “What if…?” or “How might we…?”</div>
+            <div class="quick-check">
+              <strong>Quick check:</strong> Your model tips over. Is hiding the result or changing one feature and testing again the stronger response?
+              <button class="reveal" type="button">Reveal answer</button>
+              <div class="quick-answer hidden">Change one feature and test again. It turns failure into evidence.</div>
+            </div>
+            <button class="secondary complete-lesson" type="button">Mark lesson complete</button>
+          </div>
+        </details>
 
-      {c:"Computing", q:"Which instruction uses a loop most effectively?", o:["Write 'move' ten separate times","Repeat 10 times: move 1 step","Move without a number","Stop before starting"], a:1, e:"A loop expresses repeated actions clearly and compactly."},
-      {c:"Computing", q:"A temperature sensor reports 35Â°C. The rule is IF temperature > 30Â°C THEN fan ON. What happens?", o:["Fan turns on","Fan turns off","Sensor becomes a motor","Nothing can be decided"], a:0, e:"35 is greater than 30, so the condition is true and the fan turns on."},
-      {c:"Computing", q:"Which sensor is most suitable for an automatic door that detects someone approaching?", o:["Distance sensor","Temperature sensor inside a freezer","Soil-moisture sensor","Compass only"], a:0, e:"A distance or proximity sensor can detect a person approaching the door."},
-      {c:"Computing", q:"What is the output in a burglar alarm system?", o:["The motion detected","The motion sensor","The buzzer sounding","The distance measured"], a:2, e:"The buzzer is the action produced by the system, so it is the output."},
-      {c:"Computing", q:"A program should accept ages 10 through 14, including both ends. Which condition is correct?", o:["age > 10 AND age < 14","age >= 10 AND age <= 14","age < 10 OR age > 14","age = 100"], a:1, e:"Greater-than-or-equal and less-than-or-equal include both boundary ages."},
-      {c:"Computing", q:"What is a variable in a program?", o:["A named place for a value that may change","A permanently broken wire","A type of screwdriver","A picture that cannot change"], a:0, e:"A variable stores a value under a name, such as score or temperature, and that value can change."},
-      {c:"Computing", q:"A robot repeats: move forward, turn right. After four repeats on equal sides, what path does it make?", o:["A straight line","A square","A triangle","A circle with no corners"], a:1, e:"Four equal forward moves with four right-angle turns trace a square."},
-      {c:"Computing", q:"Why should you test a program with unusual inputs as well as normal ones?", o:["To find edge-case errors","To make the computer heavier","Because normal inputs never work","To avoid debugging"], a:0, e:"Unusual or boundary inputs often reveal bugs that ordinary examples miss."},
-      {c:"Computing", q:"Which flowchart symbol usually shows the start or end?", o:["Oval","Diamond","Arrow only","Triangle"], a:0, e:"An oval or rounded terminal symbol commonly marks Start and End."},
-      {c:"Computing", q:"What is pseudocode?", o:["A virus","Plain-language steps written like a program","A secret password","A hardware sensor"], a:1, e:"Pseudocode describes program logic in structured everyday language before actual coding."},
-      {c:"Computing", q:"An LED is connected backwards and does not glow. This is most likely a problem withâ€¦", o:["Direction or polarity","The spelling of LED","The colour of the table","The room temperature only"], a:0, e:"An LED allows current mainly in one direction, so its polarity matters."},
-      {c:"Computing", q:"Which action is safest online?", o:["Share your password with a class group","Click every prize link","Ask a trusted adult before sharing personal information","Use the same simple password everywhere"], a:2, e:"Children should involve a trusted adult before sharing personal details and avoid suspicious links or reused passwords."},
+        <details class="lesson">
+          <summary>
+            <span class="lesson-number"><span>2</span></span>
+            <span class="lesson-title">Find the real problem <small>Empathy and design thinking</small></span>
+            <span class="lesson-minutes">6 min</span>
+          </summary>
+          <div class="lesson-body">
+            <p>Good innovators do not begin with a favourite gadget. They begin with a person and a genuine need. Watch what users do, ask open questions and avoid deciding the answer too early.</p>
+            <h4>A useful problem statement</h4>
+            <p><strong>How might we help [user] to [need] because [reason]?</strong></p>
+            <div class="mini-task"><strong>2-minute task:</strong> Choose one school problem—heavy bags, wasted water, lost stationery or a noisy corridor. Write one “How might we…” statement. Then imagine two different solutions.</div>
+            <div class="quick-check">
+              <strong>Quick check:</strong> Before designing a better pencil grip, what should you do first?
+              <button class="reveal" type="button">Reveal answer</button>
+              <div class="quick-answer hidden">Observe and speak to the person who finds writing difficult. Understand the user before building.</div>
+            </div>
+            <button class="secondary complete-lesson" type="button">Mark lesson complete</button>
+          </div>
+        </details>
 
-      {c:"Maker Mindset", q:"Your team has â‚¹200 for a prototype. What should you do before buying parts?", o:["Buy the first parts you see","Make a parts list, compare options and keep a small reserve","Spend everything on decoration","Ignore the budget"], a:1, e:"Planning and comparison help the team afford essential parts and handle unexpected needs."},
-      {c:"Maker Mindset", q:"Which notebook entry is most useful after a test?", o:["It worked","Test 2: held 8 coins; left support bent","Greatest project ever","No notes needed"], a:1, e:"A specific observation with a number and failure location helps guide the next improvement."},
-      {c:"Maker Mindset", q:"A teammate is using a cutting tool unsafely. What should you do?", o:["Copy them","Calmly stop and ask the teacher or lab in-charge for help","Film it for fun","Wait for an accident"], a:1, e:"Lab safety comes first. Stop unsafe use and involve the responsible adult."},
-      {c:"Maker Mindset", q:"Why label wires and components during a project?", o:["To add extra work","To make building, debugging and explaining easier","To increase voltage","To make parts magnetic"], a:1, e:"Clear labels reduce mistakes and help everyone understand and trace connections."},
-      {c:"Maker Mindset", q:"What is the best use of internet research for an ATL idea?", o:["Copy a project without understanding it","Learn how similar problems are solved, then develop and credit your own approach","Download the first answer and claim it","Avoid checking whether information is reliable"], a:1, e:"Research should inform original problem-solving, with understanding and proper credit for sources."},
-      {c:"Maker Mindset", q:"A judge asks why you selected a particular material. Which answer is strongest?", o:["It looked cool","It was available, water-resistant and passed our load test","My friend chose it","I do not want to explain"], a:1, e:"The strongest answer connects the choice to constraints and evidence from testing."},
-      {c:"Maker Mindset", q:"Which task should be shared fairly in a project team?", o:["Only speaking on stage","Planning, building, recording, testing and presenting","Nothing; one student should do everything","Only cleaning"], a:1, e:"Strong teams distribute meaningful responsibilities and ensure everyone understands the project."},
-      {c:"Maker Mindset", q:"A model uses a new battery every hour. What question shows sustainable thinking?", o:["Can we use more batteries?","Can we reduce power use or use rechargeable energy?","Can we hide the used batteries?","Can we make it louder?"], a:1, e:"Sustainable design considers energy efficiency, reuse and responsible disposal."},
-      {c:"Maker Mindset", q:"When is it acceptable to use a hot glue gun or soldering iron?", o:["Any time without telling anyone","Only with training, supervision and safety precautions","While running","To test it with a finger"], a:1, e:"Hot tools require instruction, suitable protection and adult supervision."},
-      {c:"Maker Mindset", q:"Your project solves a rare but serious safety problem. How should you judge its value?", o:["Only by how many people use it daily","By both the number affected and the importance of preventing harm","By its colour","By the number of wires"], a:1, e:"Impact includes severity as well as frequency; preventing serious harm can be highly valuable."},
-      {c:"Maker Mindset", q:"Why take photographs or sketches during prototyping?", o:["Only for decoration","To record changes, evidence and learning over time","To avoid testing","To make the model heavier"], a:1, e:"Documentation shows the development process and helps the team remember why changes were made."},
-      {c:"Maker Mindset", q:"Another team has an excellent idea. What is the best response?", o:["Damage their model","Congratulate them, ask what they learned and keep improving your own work","Claim their idea","Stop participating"], a:1, e:"Respect, curiosity and learning from peers are part of a healthy innovation community."}
-    );
+        <details class="lesson">
+          <summary>
+            <span class="lesson-number"><span>3</span></span>
+            <span class="lesson-title">Science for makers <small>Fair tests, forces, structures and circuits</small></span>
+            <span class="lesson-minutes">7 min</span>
+          </summary>
+          <div class="lesson-body">
+            <ul>
+              <li><strong>Fair test:</strong> change only one factor and keep the others the same.</li>
+              <li><strong>Friction:</strong> opposes motion; rough surfaces usually create more friction.</li>
+              <li><strong>Structures:</strong> triangles, folds and wide bases can add strength or stability.</li>
+              <li><strong>Simple circuit:</strong> a cell, wires and output need a complete closed path.</li>
+              <li><strong>Conductors:</strong> metals usually carry electricity and heat well; plastic and dry wood usually do not.</li>
+            </ul>
+            <div class="mini-task"><strong>3-minute test:</strong> Make a small bridge from flat paper and place coins on it. Now fold the paper like an accordion and try again. Record which shape holds more coins and why you think it does.</div>
+            <div class="quick-check">
+              <strong>Quick check:</strong> To test whether wheel size changes a toy car’s travel distance, what must remain the same?
+              <button class="reveal" type="button">Reveal answer</button>
+              <div class="quick-answer hidden">Keep the car, surface, starting point and push the same; change only wheel size.</div>
+            </div>
+            <button class="secondary complete-lesson" type="button">Mark lesson complete</button>
+          </div>
+        </details>
 
-    const CATEGORIES = ["Science Sense", "Logical Thinking", "Design Thinking", "Computing", "Maker Mindset"];
-    const PER_CATEGORY = 4;
-    const letters = ["A", "B", "C", "D"];
-    const $ = (id) => document.getElementById(id);
-    const state = { questions: [], index: 0, answers: [], checked: false, mode: "practice" };
+        <details class="lesson">
+          <summary>
+            <span class="lesson-number"><span>4</span></span>
+            <span class="lesson-title">Computing and robotics basics <small>Algorithms, conditions, sensors and outputs</small></span>
+            <span class="lesson-minutes">7 min</span>
+          </summary>
+          <div class="lesson-body">
+            <ul>
+              <li>An <strong>algorithm</strong> is a clear, ordered set of steps.</li>
+              <li>A <strong>loop</strong> repeats steps. “Repeat 4 times: move 2 steps” means 8 steps.</li>
+              <li>A <strong>condition</strong> makes a decision: IF it is dark, THEN switch on the lamp.</li>
+              <li>A <strong>sensor</strong> receives information—light, distance, moisture or temperature.</li>
+              <li>An <strong>output</strong> acts—an LED glows, a buzzer sounds or a motor moves.</li>
+              <li><strong>Debugging</strong> means tracing instructions to find and fix an error.</li>
+            </ul>
+            <div class="mini-task"><strong>2-minute task:</strong> Write an algorithm for brushing teeth using no more than eight numbered steps. Ask someone to point out any missing or unclear instruction.</div>
+            <div class="quick-check">
+              <strong>Quick check:</strong> Complete the rule for a plant alarm: IF the soil is dry, THEN ______.
+              <button class="reveal" type="button">Reveal answer</button>
+              <div class="quick-answer hidden">Turn on a light or buzzer (output) to tell the user the plant needs water.</div>
+            </div>
+            <button class="secondary complete-lesson" type="button">Mark lesson complete</button>
+          </div>
+        </details>
 
-    function shuffle(items) {
-      const copy = [...items];
-      for (let i = copy.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [copy[i], copy[j]] = [copy[j], copy[i]];
-      }
-      return copy;
-    }
+        <details class="lesson">
+          <summary>
+            <span class="lesson-number"><span>5</span></span>
+            <span class="lesson-title">Build a paper prototype <small>Make, test and improve with simple material</small></span>
+            <span class="lesson-minutes">8 min</span>
+          </summary>
+          <div class="lesson-body">
+            <p><strong>Challenge:</strong> Design a phone stand or book stand using only waste cardboard and tape.</p>
+            <ol>
+              <li>Sketch two possible shapes—do not build the first idea immediately.</li>
+              <li>Choose one using three criteria: stable, simple and low material use.</li>
+              <li>Build a rough version. It does not need decoration.</li>
+              <li>Test it with a book or similarly sized safe object.</li>
+              <li>Change one weak feature and test again.</li>
+            </ol>
+            <div class="remember"><strong>Say this aloud:</strong> “My first version did ____. During testing I noticed ____. So I changed ____. The next test showed ____.” That is excellent ATL evidence.</div>
+            <div class="quick-check">
+              <strong>Quick check:</strong> Why should an early prototype be quick and inexpensive?
+              <button class="reveal" type="button">Reveal answer</button>
+              <div class="quick-answer hidden">Because its purpose is to learn and change the idea before spending lots of time or material.</div>
+            </div>
+            <button class="secondary complete-lesson" type="button">Mark lesson complete</button>
+          </div>
+        </details>
 
-    function buildSet() {
-      let picked = shuffle(CATEGORIES.flatMap(category =>
-        shuffle(BANK.filter(item => item.c === category)).slice(0, PER_CATEGORY)
-      ));
-      const signatureOf = questions => questions.map(item => item.q).sort().join("||");
-      let previousSignature = "";
-      try { previousSignature = localStorage.getItem("atlPreviousQuestionSet") || ""; } catch (_) {}
+        <details class="lesson">
+          <summary>
+            <span class="lesson-number"><span>6</span></span>
+            <span class="lesson-title">Ace the interview or pitch <small>Explain clearly and collaborate</small></span>
+            <span class="lesson-minutes">5 min</span>
+          </summary>
+          <div class="lesson-body">
+            <h4>The five-sentence pitch</h4>
+            <ol>
+              <li><strong>Problem:</strong> “I noticed that…”</li>
+              <li><strong>User:</strong> “This affects…”</li>
+              <li><strong>Idea:</strong> “My solution would…”</li>
+              <li><strong>Test:</strong> “I would check whether it works by…”</li>
+              <li><strong>Improvement:</strong> “Based on feedback, I would…”</li>
+            </ol>
+            <div class="mini-task"><strong>2-minute rehearsal:</strong> Present your cardboard prototype or one school problem using the five sentences. Speak slowly. If you do not know something, say: “I don’t know yet, but I would find out by…”</div>
+            <div class="remember"><strong>Team rule:</strong> Listen, build on others’ ideas, share tools safely and use evidence—not loudness—to choose a solution.</div>
+            <button class="secondary complete-lesson" type="button">Mark lesson complete</button>
+          </div>
+        </details>
 
-      if (signatureOf(picked) === previousSignature) {
-        const first = picked[0];
-        const used = new Set(picked.map(item => item.q));
-        const replacement = BANK.find(item => item.c === first.c && !used.has(item.q));
-        if (replacement) picked[0] = replacement;
-        picked = shuffle(picked);
-      }
+        <div class="course-finish" id="courseFinish">
+          🎉 Crash course complete! Take a two-minute water break, then start the ATL Explorer Challenge below.
+        </div>
+      </div>
+    </section>
 
-      try { localStorage.setItem("atlPreviousQuestionSet", signatureOf(picked)); } catch (_) {}
-      return picked;
-    }
+    <section class="panel" aria-labelledby="quizHeading">
+      <div class="quiz-head">
+        <div class="quiz-title-row">
+          <div>
+            <h2 id="quizHeading">ATL Explorer Challenge</h2>
+            <p id="quizSubtitle">20 of 100 questions · a different mix every attempt</p>
+          </div>
+          <div class="score-chip" id="scoreChip">Ready?</div>
+        </div>
+        <div class="progress-track" aria-hidden="true"><div class="progress-bar" id="progressBar"></div></div>
+      </div>
 
-    function showOnly(id) {
-      ["startScreen", "questionScreen", "resultScreen", "reviewScreen"].forEach(name =>
-        $(name).classList.toggle("hidden", name !== id)
-      );
-    }
+      <div class="quiz-body">
+        <section class="start-screen" id="startScreen">
+          <div>
+            <h3>Ready to think like an innovator?</h3>
+            <p>This quiz rewards careful thinking—not speed or memorised technical words. Read every option before choosing.</p>
+            <ul class="how-list">
+              <li><span class="tick">✓</span><span>20 questions selected from a 100-question bank</span></li>
+              <li><span class="tick">✓</span><span>Five skill areas, balanced in every attempt</span></li>
+              <li><span class="tick">✓</span><span>Instant explanations in Practice Mode</span></li>
+              <li><span class="tick">✓</span><span>A category-wise report at the end</span></li>
+            </ul>
+          </div>
+          <div class="setup-card">
+            <label for="studentName">Explorer's name <small>(optional)</small></label>
+            <input id="studentName" maxlength="30" autocomplete="name" placeholder="Type your name">
+            <div class="mode-grid" role="radiogroup" aria-label="Quiz mode">
+              <label class="mode-option">
+                <input type="radio" name="mode" value="practice" checked>
+                <span>📘 Practice</span>
+              </label>
+              <label class="mode-option">
+                <input type="radio" name="mode" value="exam">
+                <span>⏱️ Exam</span>
+              </label>
+            </div>
+            <button class="primary full" id="startBtn">Start the challenge →</button>
+          </div>
+        </section>
 
-    function startQuiz() {
-      state.questions = buildSet();
-      state.index = 0;
-      state.answers = Array(state.questions.length).fill(null);
-      state.checked = false;
-      state.mode = document.querySelector('input[name="mode"]:checked').value;
-      $("quizSubtitle").textContent = state.mode === "practice"
-        ? "Practice mode Â· 20 of 100 questions Â· explanations after every answer"
-        : "Exam mode Â· 20 of 100 questions Â· a different set every attempt";
-      $("scoreChip").textContent = "Score 0";
-      showOnly("questionScreen");
-      renderQuestion();
-    }
+        <section class="question-screen hidden" id="questionScreen" aria-live="polite">
+          <div class="question-meta">
+            <span class="category" id="categoryTag"></span>
+            <span class="question-count" id="questionCount"></span>
+          </div>
+          <h3 id="questionText"></h3>
+          <div class="options" id="options"></div>
+          <div class="feedback hidden" id="feedback"></div>
+          <div class="question-actions">
+            <button class="secondary" id="skipBtn">Skip for now</button>
+            <button class="primary" id="nextBtn" disabled>Check answer</button>
+          </div>
+        </section>
 
-    function renderQuestion() {
-      state.checked = false;
-      const item = state.questions[state.index];
-      const saved = state.answers[state.index];
-      $("categoryTag").textContent = item.c;
-      $("questionCount").textContent = `Question ${state.index + 1} of ${state.questions.length}`;
-      $("questionText").textContent = item.q;
-      $("feedback").classList.add("hidden");
-      $("nextBtn").textContent = "Check answer";
-      $("nextBtn").disabled = saved === null;
-      $("skipBtn").textContent = state.index === state.questions.length - 1 ? "Finish later" : "Skip for now";
-      $("progressBar").style.width = `${(state.index / state.questions.length) * 100}%`;
-      $("options").innerHTML = "";
+        <section class="result-screen hidden" id="resultScreen">
+          <div class="result-top">
+            <div class="score-ring" id="scoreRing">
+              <div><b id="finalScore">0/20</b><small id="percentage">0%</small></div>
+            </div>
+            <div>
+              <h3 id="resultTitle">Challenge complete!</h3>
+              <p id="resultMessage"></p>
+            </div>
+          </div>
+          <div class="breakdown" id="breakdown"></div>
+          <div class="feedback" id="focusTip"></div>
+          <div class="result-actions">
+            <button class="primary" id="retryBtn">Try a fresh set</button>
+            <button class="secondary" id="reviewBtn">Review answers</button>
+            <button class="secondary" id="printBtn">Print result</button>
+          </div>
+        </section>
 
-      item.o.forEach((text, i) => {
-        const button = document.createElement("button");
-        button.className = "option" + (saved === i ? " selected" : "");
-        button.type = "button";
-        button.innerHTML = `<span class="option-letter">${letters[i]}</span><span>${text}</span>`;
-        button.addEventListener("click", () => selectOption(i));
-        $("options").appendChild(button);
-      });
-    }
+        <section class="review-screen hidden" id="reviewScreen">
+          <h3>Answer review</h3>
+          <div id="reviewList"></div>
+          <button class="primary" id="backToResultBtn">Back to result</button>
+        </section>
+      </div>
+    </section>
 
-    function selectOption(index) {
-      if (state.checked) return;
-      state.answers[state.index] = index;
-      [...$("options").children].forEach((node, i) => node.classList.toggle("selected", i === index));
-      $("nextBtn").disabled = false;
-    }
+    <section class="tips">
+      <h2>A simple 7-day preparation plan</h2>
+      <div class="tip-grid">
+        <div class="tip"><strong>Days 1–2 · Notice problems</strong><span>List five small problems at home or school. Ask: who faces each problem, and why?</span></div>
+        <div class="tip"><strong>Days 3–4 · Build small</strong><span>Make one solution using cardboard, tape or reused material. Test it with someone.</span></div>
+        <div class="tip"><strong>Days 5–6 · Logic + science</strong><span>Practise patterns, circuits, forces, measurements and step-by-step instructions.</span></div>
+        <div class="tip"><strong>Day 7 · Explain clearly</strong><span>Give a two-minute pitch: problem, user, idea, test result and next improvement.</span></div>
+        <div class="tip"><strong>In the interview</strong><span>Say “I don't know yet, but I would test…” when unsure. Curiosity beats bluffing.</span></div>
+        <div class="tip"><strong>Maker rule</strong><span>A failed prototype is useful evidence. Explain what you learned and what you would change.</span></div>
+      </div>
+    </section>
+  </main>
 
-    function checkOrNext() {
-      const item = state.questions[state.index];
-      const chosen = state.answers[state.index];
-      if (!state.checked) {
-        if (chosen === null) return;
-        state.checked = true;
-        [...$("options").children].forEach((node, i) => {
-          node.disabled = true;
-          if (i === item.a) node.classList.add("correct");
-          if (i === chosen && chosen !== item.a) node.classList.add("wrong");
-        });
-        if (state.mode === "practice") {
-          $("feedback").innerHTML = `<strong>${chosen === item.a ? "Correct! ðŸŽ‰" : "Good try."}</strong> ${item.e}`;
-          $("feedback").classList.remove("hidden");
-        }
-        const correct = state.answers.reduce((sum, answer, i) => sum + (answer === state.questions[i].a ? 1 : 0), 0);
-        $("scoreChip").textContent = `Score ${correct}`;
-        $("nextBtn").textContent = state.index === state.questions.length - 1 ? "See my result" : "Next question â†’";
-      } else {
-        advance();
-      }
-    }
+  <footer class="shell">
+    Independent practice resource · Based on publicly available ATL curriculum themes · Not affiliated with or endorsed by AIM/NITI Aayog
+  </footer>
 
-    function advance() {
-      if (state.index < state.questions.length - 1) {
-        state.index++;
-        renderQuestion();
-      } else {
-        showResult();
-      }
-    }
-
-    function skipQuestion() {
-      if (state.index < state.questions.length - 1) {
-        state.index++;
-        renderQuestion();
-      } else {
-        const unanswered = state.answers.findIndex(answer => answer === null);
-        if (unanswered >= 0) {
-          state.index = unanswered;
-          renderQuestion();
-        } else {
-          showResult();
-        }
-      }
-    }
-
-    function showResult() {
-      const total = state.questions.length;
-      const score = state.answers.reduce((sum, answer, i) => sum + (answer === state.questions[i].a ? 1 : 0), 0);
-      const pct = Math.round(score / total * 100);
-      const name = $("studentName").value.trim();
-      $("finalScore").textContent = `${score}/${total}`;
-      $("percentage").textContent = `${pct}%`;
-      $("scoreRing").style.setProperty("--score-angle", `${pct * 3.6}deg`);
-      $("progressBar").style.width = "100%";
-      $("scoreChip").textContent = `${pct}%`;
-
-      let title, message;
-      if (pct >= 90) {
-        title = "Outstanding innovator! ðŸš€";
-        message = "Your reasoning is careful, practical and user-focused. Keep building and explaining your ideas.";
-      } else if (pct >= 75) {
-        title = "Strong tinkerer! ðŸŒŸ";
-        message = "You have a very good foundation. Review the weakest category and try another set.";
-      } else if (pct >= 55) {
-        title = "Promising explorer! ðŸ”§";
-        message = "You are thinking in the right direction. Explanations and small home prototypes will sharpen your skills.";
-      } else {
-        title = "Every maker starts here! ðŸŒ±";
-        message = "Treat each missed answer as a clue. Review, test ideas with real objects, and try again.";
-      }
-      $("resultTitle").textContent = name ? `${name}, ${title.charAt(0).toLowerCase()}${title.slice(1)}` : title;
-      $("resultMessage").textContent = message;
-
-      const categoryScores = CATEGORIES.map(category => {
-        const indices = state.questions.map((q, i) => q.c === category ? i : -1).filter(i => i >= 0);
-        const correct = indices.filter(i => state.answers[i] === state.questions[i].a).length;
-        return { category, correct, total: indices.length };
-      });
-
-      $("breakdown").innerHTML = categoryScores.map(item =>
-        `<div class="break-item"><b>${item.correct}/${item.total}</b><small>${item.category}</small></div>`
-      ).join("");
-
-      const weakest = [...categoryScores].sort((a, b) => (a.correct / a.total) - (b.correct / b.total))[0];
-      const advice = {
-        "Science Sense": "Try small fair tests: change one thing, measure what happens, and explain why.",
-        "Logical Thinking": "Practise number patterns, conditions, classification and explaining each step aloud.",
-        "Design Thinking": "Start with the user: observe, ask, define the need, prototype, test and improve.",
-        "Computing": "Practise algorithms, loops, IFâ€“THEN rules, flowcharts, sensors and step-by-step debugging.",
-        "Maker Mindset": "Build with simple materials, welcome feedback, work safely and describe what failure taught you."
-      };
-      $("focusTip").innerHTML = `<strong>Best next focus: ${weakest.category}.</strong> ${advice[weakest.category]}`;
-      showOnly("resultScreen");
-    }
-
-    function showReview() {
-      $("reviewList").innerHTML = state.questions.map((item, i) => {
-        const chosen = state.answers[i];
-        const correct = chosen === item.a;
-        return `<article class="feedback" style="margin-bottom:12px">
-          <strong>${i + 1}. ${correct ? "âœ“" : "âœ—"} ${item.q}</strong><br>
-          Your answer: ${chosen === null ? "Not answered" : item.o[chosen]}<br>
-          Correct answer: ${item.o[item.a]}<br>
-          <span>${item.e}</span>
-        </article>`;
-      }).join("");
-      showOnly("reviewScreen");
-      window.scrollTo({ top: $("quizHeading").offsetTop, behavior: "smooth" });
-    }
-
-    function updateCourseProgress() {
-      const lessons = [...document.querySelectorAll(".lesson")];
-      const completed = lessons.filter(lesson => lesson.classList.contains("done")).length;
-      $("courseProgressText").textContent = `${completed} of ${lessons.length} lessons`;
-      $("courseProgressBar").style.width = `${(completed / lessons.length) * 100}%`;
-      $("courseFinish").classList.toggle("show", completed === lessons.length);
-    }
-
-    document.querySelectorAll(".reveal").forEach(button => {
-      button.addEventListener("click", () => {
-        const answer = button.nextElementSibling;
-        answer.classList.remove("hidden");
-        button.classList.add("hidden");
-      });
-    });
-
-    document.querySelectorAll(".complete-lesson").forEach((button, index, buttons) => {
-      button.addEventListener("click", () => {
-        const lesson = button.closest(".lesson");
-        lesson.classList.add("done");
-        button.textContent = "âœ“ Lesson complete";
-        button.disabled = true;
-        updateCourseProgress();
-        setTimeout(() => {
-          lesson.open = false;
-          const nextLesson = lesson.nextElementSibling;
-          if (nextLesson && nextLesson.matches(".lesson")) {
-            nextLesson.open = true;
-            nextLesson.scrollIntoView({ behavior: "smooth", block: "center" });
-          } else {
-            $("courseFinish").scrollIntoView({ behavior: "smooth", block: "center" });
-          }
-        }, 350);
-      });
-    });
-
-    updateCourseProgress();
-    $("startBtn").addEventListener("click", startQuiz);
-    $("nextBtn").addEventListener("click", checkOrNext);
-    $("skipBtn").addEventListener("click", skipQuestion);
-    $("retryBtn").addEventListener("click", startQuiz);
-    $("reviewBtn").addEventListener("click", showReview);
-    $("backToResultBtn").addEventListener("click", () => showOnly("resultScreen"));
-    $("printBtn").addEventListener("click", () => window.print());
-  </script>
+  <script src="questions-core.js"></script>
+  <script src="questions-extra.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>
-
