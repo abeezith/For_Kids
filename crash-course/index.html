@@ -1,0 +1,567 @@
+<title>ATL Crash Course — Hard Mode</title>
+<style>
+  :root{
+    --paper:#f3ead4;
+    --paper-line:#d9caa4;
+    --ink:#1e2f3d;
+    --blueprint:#2c4a63;
+    --blueprint-2:#3a5f7d;
+    --copper:#b8631f;
+    --copper-2:#d97f34;
+    --circuit:#3f7a52;
+    --rust:#a8402f;
+    --graphite:#5a5a52;
+    --card:#fbf6e8;
+    --card-border:#c9b98c;
+    --shadow:rgba(30,47,61,0.18);
+    --focus:#0d6efd;
+    --bonus:#7a4fae;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --paper:#101c26; --paper-line:#1c2e3c; --ink:#eadfc2;
+      --blueprint:#8fb8d6; --blueprint-2:#6f9cbd; --copper:#e8a259; --copper-2:#f0b878;
+      --circuit:#7fc496; --rust:#e07a68; --graphite:#b9ad8e;
+      --card:#16232f; --card-border:#2c4356; --shadow:rgba(0,0,0,0.4); --focus:#8fb8d6;
+      --bonus:#b48ce0;
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#101c26; --paper-line:#1c2e3c; --ink:#eadfc2;
+    --blueprint:#8fb8d6; --blueprint-2:#6f9cbd; --copper:#e8a259; --copper-2:#f0b878;
+    --circuit:#7fc496; --rust:#e07a68; --graphite:#b9ad8e;
+    --card:#16232f; --card-border:#2c4356; --shadow:rgba(0,0,0,0.4); --focus:#8fb8d6;
+    --bonus:#b48ce0;
+  }
+  :root[data-theme="light"]{
+    --paper:#f3ead4; --paper-line:#d9caa4; --ink:#1e2f3d;
+    --blueprint:#2c4a63; --blueprint-2:#3a5f7d; --copper:#b8631f; --copper-2:#d97f34;
+    --circuit:#3f7a52; --rust:#a8402f; --graphite:#5a5a52;
+    --card:#fbf6e8; --card-border:#c9b98c; --shadow:rgba(30,47,61,0.18); --focus:#0d6efd;
+    --bonus:#7a4fae;
+  }
+
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:
+      repeating-linear-gradient(0deg, transparent 0 27px, var(--paper-line) 27px 28px),
+      repeating-linear-gradient(90deg, transparent 0 27px, var(--paper-line) 27px 28px),
+      var(--paper);
+    background-attachment:fixed;
+    color:var(--ink);
+    font-family:"Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  .display{
+    font-family:"Arial Black", Impact, "Haettenschweiler", "Segoe UI", sans-serif;
+    text-transform:uppercase; letter-spacing:0.04em; text-wrap:balance;
+  }
+  .mono{ font-family:Consolas, "SF Mono", "Courier New", monospace; font-variant-numeric:tabular-nums; }
+  ::selection{background:var(--copper-2);color:var(--ink);}
+  :focus-visible{outline:3px solid var(--focus);outline-offset:2px;}
+  @media (prefers-reduced-motion:reduce){*{animation-duration:0.001ms !important;transition-duration:0.001ms !important;}}
+
+  .page{max-width:760px;margin:0 auto;padding:28px 20px 80px;}
+
+  .titleblock{
+    border:2px solid var(--ink); background:var(--card);
+    box-shadow:5px 5px 0 var(--shadow); padding:22px 22px 14px; margin-bottom:26px;
+  }
+  .titleblock .eyebrow{ font-size:0.72rem; letter-spacing:0.18em; color:var(--copper); font-weight:700; }
+  .titleblock h1{ font-size:clamp(1.6rem, 5vw, 2.3rem); margin:6px 0 4px; color:var(--blueprint); line-height:1.15; }
+  .titleblock p.sub{ margin:0 0 16px; color:var(--graphite); max-width:58ch; font-size:0.98rem; }
+  .titlefields{ display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); border-top:1px solid var(--card-border); padding-top:12px; gap:10px 18px; }
+  .titlefields .field .k{ font-size:0.62rem; letter-spacing:0.12em; color:var(--graphite); text-transform:uppercase; }
+  .titlefields .field .v{ font-family:Consolas, "SF Mono", monospace; font-size:0.88rem; color:var(--ink); }
+
+  /* ---- Session timer ---- */
+  .timer-unit{
+    border:2px solid var(--ink); background:var(--card);
+    box-shadow:5px 5px 0 var(--shadow); padding:18px 20px; margin-bottom:34px;
+  }
+  .timer-top{display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;}
+  .timer-clock{font-family:Consolas,monospace; font-size:2.6rem; color:var(--blueprint); line-height:1;}
+  .timer-controls{display:flex; gap:8px; align-items:center; flex-wrap:wrap;}
+  .duration-pick{display:flex; border:1.5px solid var(--ink); overflow:hidden;}
+  .duration-pick button{
+    font-family:Consolas,monospace; font-size:0.82rem; border:none; background:transparent; color:var(--ink);
+    padding:8px 14px; cursor:pointer;
+  }
+  .duration-pick button.active{background:var(--blueprint); color:var(--paper);}
+  .duration-pick button + button{border-left:1.5px solid var(--ink);}
+  .tbtn{
+    font-family:"Arial Black", Impact, sans-serif; text-transform:uppercase; letter-spacing:0.06em;
+    font-size:0.78rem; border:2px solid var(--ink); background:var(--copper); color:#fff8ec;
+    padding:9px 16px; cursor:pointer; box-shadow:3px 3px 0 var(--shadow);
+  }
+  .tbtn:hover{transform:translate(1px,1px); box-shadow:2px 2px 0 var(--shadow);}
+  .tbtn.ghost{background:transparent; color:var(--ink);}
+  .phase-rail{ display:flex; height:8px; border:1px solid var(--ink); margin-top:16px; overflow:hidden;}
+  .phase-seg{ position:relative; border-right:1px solid var(--ink); }
+  .phase-seg:last-child{border-right:none;}
+  .phase-seg .fill{ position:absolute; inset:0; width:0%; background:var(--copper); }
+  .phase-labels{ display:flex; margin-top:6px; }
+  .phase-labels span{ font-size:0.68rem; color:var(--graphite); }
+  .phase-labels span.on{ color:var(--copper); font-weight:700; }
+
+  h2.section-title{
+    font-size:1.05rem; letter-spacing:0.08em; color:var(--blueprint);
+    display:flex; align-items:center; gap:10px; margin:44px 0 6px;
+  }
+  h2.section-title .num{
+    font-family:Consolas,monospace; font-size:0.8rem; color:var(--copper);
+    border:1.5px solid var(--copper); border-radius:50%; width:26px; height:26px;
+    display:flex; align-items:center; justify-content:center; flex:none;
+  }
+  p.section-intro{color:var(--graphite); margin:0 0 20px; max-width:62ch;}
+
+  /* ---- Cheat sheets ---- */
+  .sheets{display:flex; flex-direction:column; gap:10px;}
+  .sheet{ border:1.5px solid var(--card-border); background:var(--card); }
+  .sheet summary{
+    list-style:none; cursor:pointer; padding:13px 16px; display:flex; align-items:center; gap:12px;
+  }
+  .sheet summary::-webkit-details-marker{display:none;}
+  .sheet svg{width:26px;height:26px;stroke:var(--copper);flex:none;}
+  .sheet summary .sname{font-weight:700; color:var(--blueprint); flex:1;}
+  .sheet summary .stime{font-family:Consolas,monospace; font-size:0.72rem; color:var(--graphite);}
+  .sheet summary .chev{font-family:Consolas,monospace; color:var(--copper); transition:transform .2s;}
+  .sheet[open] summary .chev{transform:rotate(90deg);}
+  .sheet .sbody{padding:0 16px 16px 54px;}
+  .sheet .sbody ul{margin:0; padding-left:18px; color:var(--ink); font-size:0.92rem;}
+  .sheet .sbody li{margin-bottom:6px;}
+  .sheet .sbody li b{color:var(--copper-2);}
+
+  /* ---- Quiz workbench ---- */
+  .workbench{ border:2px solid var(--ink); background:var(--card); box-shadow:5px 5px 0 var(--shadow); padding:22px; }
+  .gauge-row{display:flex; align-items:center; gap:14px; margin-bottom:18px;}
+  .gauge-track{flex:1; height:10px; border:1.5px solid var(--ink); background:transparent; position:relative; overflow:hidden;}
+  .gauge-fill{height:100%; background:repeating-linear-gradient(45deg, var(--copper) 0 6px, var(--copper-2) 6px 12px); width:0%; transition:width .35s ease;}
+  .gauge-label{font-family:Consolas,monospace; font-size:0.78rem; color:var(--graphite); white-space:nowrap;}
+  .chip-row{display:flex; gap:8px; margin-bottom:14px; flex-wrap:wrap;}
+  .cat-chip{
+    display:inline-flex; align-items:center; gap:6px; font-size:0.68rem; letter-spacing:0.1em; text-transform:uppercase;
+    color:var(--blueprint); border:1px solid var(--blueprint); padding:3px 9px;
+  }
+  .cat-chip svg{width:14px;height:14px;stroke:var(--blueprint);}
+  .diff-chip{
+    font-size:0.66rem; letter-spacing:0.1em; text-transform:uppercase; padding:3px 9px; font-weight:700;
+    border:1px solid var(--rust); color:var(--rust);
+  }
+  .diff-chip.bonus{border-color:var(--bonus); color:var(--bonus);}
+
+  .q-text{font-size:1.12rem; font-weight:600; margin:0 0 18px; color:var(--ink); text-wrap:balance;}
+  .options{display:flex; flex-direction:column; gap:10px;}
+  .opt{
+    text-align:left; border:1.5px solid var(--card-border); background:transparent; color:var(--ink);
+    padding:12px 14px; font-size:0.96rem; font-family:inherit; cursor:pointer;
+    display:flex; align-items:center; gap:12px; transition:border-color .15s, background .15s;
+  }
+  .opt:hover:not(:disabled){border-color:var(--copper);}
+  .opt .letter{
+    font-family:Consolas,monospace; font-weight:700; color:var(--copper); border:1.5px solid var(--copper);
+    width:24px; height:24px; flex:none; display:flex; align-items:center; justify-content:center; font-size:0.78rem;
+  }
+  .opt:disabled{cursor:default;}
+  .opt.correct{border-color:var(--circuit); background:color-mix(in srgb, var(--circuit) 14%, transparent);}
+  .opt.correct .letter{border-color:var(--circuit); color:var(--circuit);}
+  .opt.wrong{border-color:var(--rust); background:color-mix(in srgb, var(--rust) 12%, transparent);}
+  .opt.wrong .letter{border-color:var(--rust); color:var(--rust);}
+
+  .explain{ margin-top:16px; padding:12px 14px; border-left:3px solid var(--copper);
+    background:color-mix(in srgb, var(--copper) 8%, transparent); font-size:0.9rem; color:var(--graphite); display:none; }
+  .explain.show{display:block;}
+  .explain b{color:var(--ink);}
+
+  .wb-footer{display:flex; justify-content:space-between; align-items:center; margin-top:20px;}
+  .btn{
+    font-family:"Arial Black", Impact, sans-serif; text-transform:uppercase; letter-spacing:0.06em; font-size:0.82rem;
+    border:2px solid var(--ink); background:var(--copper); color:#fff8ec; padding:11px 20px; cursor:pointer;
+    box-shadow:3px 3px 0 var(--shadow);
+  }
+  .btn:hover{transform:translate(1px,1px); box-shadow:2px 2px 0 var(--shadow);}
+  .btn:disabled{opacity:0.4; cursor:not-allowed; box-shadow:none; transform:none;}
+  .btn.ghost{background:transparent; color:var(--ink);}
+  .progress-text{font-family:Consolas,monospace; font-size:0.8rem; color:var(--graphite);}
+
+  .results{display:none; text-align:center;}
+  .results.show{display:block;}
+  .stamp{
+    display:inline-block; border:3px solid var(--circuit); color:var(--circuit); padding:10px 22px;
+    font-family:"Arial Black",Impact,sans-serif; text-transform:uppercase; letter-spacing:0.08em; font-size:1.1rem;
+    transform:rotate(-3deg); margin-bottom:18px;
+  }
+  .score-big{font-family:Consolas,monospace; font-size:2.6rem; margin:6px 0; color:var(--blueprint);}
+  .cat-bars{display:flex; flex-direction:column; gap:10px; margin:24px 0; text-align:left;}
+  .cat-bar-row{display:flex; align-items:center; gap:12px;}
+  .cat-bar-row .cbl{width:170px; font-size:0.82rem; color:var(--graphite); flex:none;}
+  .cat-bar-track{flex:1; height:8px; border:1px solid var(--card-border); position:relative;}
+  .cat-bar-fill{height:100%; background:var(--blueprint-2);}
+  .cat-bar-row .cbv{font-family:Consolas,monospace; font-size:0.78rem; width:44px; text-align:right; flex:none;}
+
+  footer{margin-top:50px; text-align:center; color:var(--graphite); font-size:0.78rem;}
+</style>
+
+<div class="page">
+
+  <div class="titleblock">
+    <div class="eyebrow">Prep Sheet No. 02 · Revision + Hard Mode</div>
+    <h1 class="display">ATL Crash Course<br>Before the Exam</h1>
+    <p class="sub">Round one was too easy for both of them — this one turns the difficulty up and packs revision, a harder quiz, and five bonus brain-teasers into a single 30–45 minute session.</p>
+    <div class="titlefields">
+      <div class="field"><div class="k">Session</div><div class="v">30–45 min</div></div>
+      <div class="field"><div class="k">Difficulty</div><div class="v">Hard + Bonus</div></div>
+      <div class="field"><div class="k">Questions</div><div class="v">25 · 5 categories</div></div>
+      <div class="field"><div class="k">Short on time?</div><div class="v">Skip bonus round</div></div>
+    </div>
+  </div>
+
+  <div class="timer-unit">
+    <div class="timer-top">
+      <div>
+        <div class="gauge-label mono" style="margin-bottom:4px;">SESSION CLOCK</div>
+        <div class="timer-clock mono" id="clockDisplay">30:00</div>
+      </div>
+      <div class="timer-controls">
+        <div class="duration-pick">
+          <button id="pick30" class="active">30 MIN</button>
+          <button id="pick45">45 MIN</button>
+        </div>
+        <button class="tbtn" id="startPauseBtn">Start</button>
+        <button class="tbtn ghost" id="resetBtn">Reset</button>
+      </div>
+    </div>
+    <div class="phase-rail" id="phaseRail"></div>
+    <div class="phase-labels" id="phaseLabels"></div>
+  </div>
+
+  <h2 class="section-title"><span class="num">1</span> Speed-Revise Cheat Sheets</h2>
+  <p class="section-intro">Ten to twelve minutes, tap each one open, read once out loud. These go a level deeper than the basics — this is where the harder quiz questions come from.</p>
+  <div class="sheets" id="sheets"></div>
+
+  <h2 class="section-title"><span class="num">2</span> Hard Mode Quiz</h2>
+  <p class="section-intro">20 harder questions (four per category), then five bonus brain-teasers at the very end. These require two-step thinking, not just recall.</p>
+
+  <div class="workbench">
+    <div class="gauge-row">
+      <span class="gauge-label mono" id="gaugeLabel">Q 1 / 25</span>
+      <div class="gauge-track"><div class="gauge-fill" id="gaugeFill"></div></div>
+    </div>
+
+    <div id="quizArea">
+      <div class="chip-row">
+        <div class="cat-chip" id="catChip"></div>
+        <div class="diff-chip" id="diffChip"></div>
+      </div>
+      <p class="q-text" id="qText"></p>
+      <div class="options" id="options"></div>
+      <div class="explain" id="explain"></div>
+      <div class="wb-footer">
+        <span class="progress-text mono" id="scoreLive">Score: 0</span>
+        <button class="btn" id="nextBtn" disabled>Next →</button>
+      </div>
+    </div>
+
+    <div class="results" id="results">
+      <div class="stamp" id="stamp">Result</div>
+      <div class="score-big mono" id="finalScore">0 / 25</div>
+      <p id="finalMsg" style="color:var(--graphite);max-width:52ch;margin:0 auto;"></p>
+      <div class="cat-bars" id="catBars"></div>
+      <button class="btn ghost" id="restartBtn">↺ Restart Quiz</button>
+    </div>
+  </div>
+
+  <footer>Prepared for a Class 6 CBSE ATL aspirant · Hard-mode revision, not an official selection paper.</footer>
+</div>
+
+<script>
+(function(){
+  const icons = {
+    logic: '<svg viewBox="0 0 64 64" fill="none" stroke-width="3" stroke-linecap="round"><rect x="8" y="8" width="16" height="16"/><circle cx="48" cy="16" r="8"/><rect x="8" y="40" width="16" height="16"/></svg>',
+    science: '<svg viewBox="0 0 64 64" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M26 8h12M28 8v18L14 52a4 4 0 0 0 4 6h28a4 4 0 0 0 4-6L36 26V8"/><path d="M20 42h24"/></svg>',
+    tech: '<svg viewBox="0 0 64 64" fill="none" stroke-width="3" stroke-linecap="round"><rect x="16" y="16" width="32" height="32" rx="2"/><line x1="24" y1="8" x2="24" y2="16"/><line x1="40" y1="8" x2="40" y2="16"/><line x1="24" y1="48" x2="24" y2="56"/><line x1="40" y1="48" x2="40" y2="56"/><line x1="8" y1="24" x2="16" y2="24"/><line x1="8" y1="40" x2="16" y2="40"/><line x1="48" y1="24" x2="56" y2="24"/><line x1="48" y1="40" x2="56" y2="40"/></svg>',
+    creative: '<svg viewBox="0 0 64 64" fill="none" stroke-width="3" stroke-linecap="round"><path d="M32 8a16 16 0 0 0-9 29c2 1.5 3 3.5 3 6v1h12v-1c0-2.5 1-4.5 3-6a16 16 0 0 0-9-29z"/><line x1="26" y1="52" x2="38" y2="52"/><line x1="28" y1="58" x2="36" y2="58"/></svg>',
+    spatial: '<svg viewBox="0 0 64 64" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="32" cy="32" r="10"/><g stroke-width="4"><line x1="32" y1="6" x2="32" y2="16"/><line x1="32" y1="48" x2="32" y2="58"/><line x1="6" y1="32" x2="16" y2="32"/><line x1="48" y1="32" x2="58" y2="32"/><line x1="13" y1="13" x2="20" y2="20"/><line x1="44" y1="44" x2="51" y2="51"/><line x1="51" y1="13" x2="44" y2="20"/><line x1="20" y1="44" x2="13" y2="51"/></g></svg>',
+    bonus: '<svg viewBox="0 0 64 64" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M14 8v48"/><path d="M14 10h30l-8 12 8 12H14"/></svg>'
+  };
+
+  // ---------------- Cheat sheets ----------------
+  const sheets = [
+    {icon:'logic', name:'Logic & Patterns', time:'~2 min', points:[
+      'Number patterns often use <b>two combined steps</b> (e.g. ×2 then +1) — write the difference between each pair of numbers first.',
+      'Letter codes usually shift every letter by the <b>same amount</b> in the alphabet — decode one letter, then check it holds for the rest.',
+      'For "who is tallest/shortest" puzzles, draw a quick line and place each clue on it one at a time.',
+      'For odd-one-out, first guess the obvious category — then check if one item breaks a hidden rule (like being the only even/prime number).'
+    ]},
+    {icon:'science', name:'Science Fundamentals', time:'~3 min', points:[
+      '<b>Series circuit:</b> one bulb breaking stops the whole circuit — all bulbs go off, because there is only one path for current.',
+      '<b>Floating vs sinking:</b> a ship floats because its hollow shape spreads its weight over a large volume, lowering its overall density — a solid nail of the same metal has no such shape.',
+      '<b>Sublimation</b> is a solid changing directly into a gas, skipping the liquid stage (camphor, dry ice).',
+      'A <b>longer lever arm</b> (handle further from the pivot) always needs less effort to lift the same load.'
+    ]},
+    {icon:'tech', name:'Tech & Innovation', time:'~2 min', points:[
+      '<b>IoT (Internet of Things)</b> = everyday objects (lights, fans, watches) connected to the internet so they can send and receive data.',
+      'The <b>Atal Innovation Mission</b> (which runs ATL) was launched by <b>NITI Aayog</b> in 2016.',
+      'Beginner boards like <b>Arduino</b> and <b>micro:bit</b> are the small computers ATL projects are usually built on.',
+      'A <b>sensor</b> reads information from the world; an <b>actuator</b> is the part that acts on it (a motor, a buzzer, a light) — sensor senses, actuator acts.'
+    ]},
+    {icon:'creative', name:'Design Thinking', time:'~3 min', points:[
+      'The five stages, in order: <b>Empathize → Define → Ideate → Prototype → Test.</b>',
+      'During <b>Ideate</b>, the goal is quantity, not quality — generate many ideas first, judge them later.',
+      'A limit like "no more than ₹50" or "only recycled material" is called a <b>constraint</b> — good designers treat it as a creative challenge, not a blocker.',
+      'If several users struggle with a prototype in the <b>same way</b>, the design needs to change — it is rarely the users\' fault.'
+    ]},
+    {icon:'spatial', name:'Spatial & Mechanical', time:'~2 min', points:[
+      'In a row of meshed gears, direction <b>flips with every gear</b> — so gear 1 and gear 3 always spin the same way, gear 2 spins opposite.',
+      'On a standard die, <b>opposite faces always add up to 7</b> (1–6, 2–5, 3–4).',
+      'A <b>movable pulley</b> roughly halves the effort needed; a <b>fixed pulley</b> only changes the direction of the pull, not the effort.',
+      'A mirror always flips <b>left and right</b>, not up and down — your right hand looks like a left hand in a mirror.'
+    ]}
+  ];
+  const sheetsWrap = document.getElementById('sheets');
+  sheets.forEach(s=>{
+    const d = document.createElement('details');
+    d.className='sheet';
+    d.innerHTML = `<summary>${icons[s.icon]}<span class="sname">${s.name}</span><span class="stime mono">${s.time}</span><span class="chev">▸</span></summary>
+      <div class="sbody"><ul>${s.points.map(p=>`<li>${p}</li>`).join('')}</ul></div>`;
+    sheetsWrap.appendChild(d);
+  });
+
+  // ---------------- Hard quiz + bonus bank ----------------
+  const questions = [
+    // Logic & Patterns — hard
+    {cat:'logic', catName:'Logic & Patterns', diff:'hard', q:'What comes next? 3, 7, 15, 31, ?', opts:['47','55','63','60'], answer:2, explain:'Each number is <b>doubled, then +1</b> (3→7, 7→15, 15→31), so 31×2+1 = <b>63</b>.'},
+    {cat:'logic', catName:'Logic & Patterns', diff:'hard', q:'If "SCHOOL" is written as "TDIPPM" (every letter shifted forward by 1), how is "LAB" written the same way?', opts:['KZA','MBC','MBB','LBC'], answer:1, explain:'L→M, A→B, B→C, so LAB becomes <b>MBC</b> — check it matches the SCHOOL→TDIPPM pattern letter by letter.'},
+    {cat:'logic', catName:'Logic & Patterns', diff:'hard', q:'A is taller than B. B is taller than C. D is taller than A. Who is tallest?', opts:['A','B','C','D'], answer:3, explain:'Ordering it out: D > A > B > C. <b>D</b> is tallest.'},
+    {cat:'logic', catName:'Logic & Patterns', diff:'hard', q:'What comes next? 2, 6, 12, 20, 30, ?', opts:['36','40','42','44'], answer:2, explain:'Each term is n×(n+1): 1×2, 2×3, 3×4, 4×5, 5×6, then 6×7 = <b>42</b>.'},
+    // Science — hard
+    {cat:'science', catName:'Science Fundamentals', diff:'hard', q:'In a series circuit with 3 bulbs, if one bulb blows, what happens to the other two?', opts:['They get brighter','They stay exactly the same','They also switch off','Nothing changes'], answer:2, explain:'A series circuit has only <b>one path</b> for current — break it anywhere and the whole circuit stops, so all bulbs go off.'},
+    {cat:'science', catName:'Science Fundamentals', diff:'hard', q:'Why does a heavy iron ship float, while a small iron nail sinks?', opts:['Ships are made of a lighter type of iron','The ship\'s hollow shape displaces a large volume of water, lowering its overall density','Ships have engines pushing them upward','Nails are denser than water only near the coast'], answer:1, explain:'The ship\'s <b>shape spreads its weight over a large volume</b>, so its average density is less than water\'s — a solid nail has no such shape.'},
+    {cat:'science', catName:'Science Fundamentals', diff:'hard', q:'Dry ice (solid carbon dioxide) turns straight into gas without becoming liquid. What is this called?', opts:['Evaporation','Condensation','Sublimation','Melting'], answer:2, explain:'Going directly from <b>solid to gas</b>, skipping the liquid stage, is called <b>sublimation</b>.'},
+    {cat:'science', catName:'Science Fundamentals', diff:'hard', q:'To lift the same load with LESS effort using a lever, you should:', opts:['Move the handle closer to the pivot','Move the handle further from the pivot','Use a shorter lever overall','Push down faster'], answer:1, explain:'The <b>further the effort is from the pivot</b>, the less force is needed to lift the same load — that\'s mechanical advantage.'},
+    // Tech & Innovation — hard
+    {cat:'tech', catName:'Tech & Innovation', diff:'hard', q:'Which best describes "IoT" (Internet of Things)?', opts:['A programming language for websites','Everyday devices connected to the internet, sending and receiving data','A social media platform','A type of computer virus'], answer:1, explain:'<b>IoT</b> means ordinary objects — fans, lights, watches — connected online so they can share data and be controlled remotely.'},
+    {cat:'tech', catName:'Tech & Innovation', diff:'hard', q:'Under which Indian government body was the Atal Innovation Mission (which runs ATL) launched?', opts:['ISRO','NITI Aayog','CBSE','DRDO'], answer:1, explain:'The Atal Innovation Mission was launched in 2016 under <b>NITI Aayog</b>, India\'s policy think tank.'},
+    {cat:'tech', catName:'Tech & Innovation', diff:'hard', q:'Which small board is commonly used in Tinkering Labs to build sensor-based projects?', opts:['Arduino','PowerPoint','Photoshop','Excel'], answer:0, explain:'<b>Arduino</b> (and boards like micro:bit) are small, beginner-friendly computers used to connect sensors, lights, and motors in ATL projects.'},
+    {cat:'tech', catName:'Tech & Innovation', diff:'hard', q:'What is the key difference between a "sensor" and an "actuator"?', opts:['They are two names for the same part','A sensor detects information; an actuator acts on the world in response','A sensor moves; an actuator only reads data','Actuators only work with sunlight'], answer:1, explain:'A <b>sensor</b> senses (light, heat, motion); an <b>actuator</b> — a motor, buzzer, or light — is what actually moves or responds.'},
+    // Design Thinking — hard
+    {cat:'creative', catName:'Design Thinking', diff:'hard', q:'What is the correct order of the five design-thinking stages?', opts:['Prototype → Test → Empathize → Define → Ideate','Empathize → Define → Ideate → Prototype → Test','Ideate → Empathize → Test → Define → Prototype','Define → Prototype → Empathize → Ideate → Test'], answer:1, explain:'The standard order is <b>Empathize → Define → Ideate → Prototype → Test</b> — understand, frame, brainstorm, build, then try it out.'},
+    {cat:'creative', catName:'Design Thinking', diff:'hard', q:'During the "Ideate" stage, what is the best approach?', opts:['Pick the very first idea and build it','Generate as many ideas as possible without judging them yet','Ask a teacher to choose for you','Skip straight to prototyping'], answer:1, explain:'Ideation works best when you generate <b>lots of ideas first</b>, without judging — narrowing down comes later.'},
+    {cat:'creative', catName:'Design Thinking', diff:'hard', q:'You must build a rainwater collector using only recycled material and under ₹50. This limit is called a:', opts:['Constraint','Prototype','Sensor','Empathy map'], answer:0, explain:'A rule that limits how you can solve a problem — like budget or material — is a <b>constraint</b>, and good designers treat it as a creative challenge.'},
+    {cat:'creative', catName:'Design Thinking', diff:'hard', q:'Two different classmates test your prototype and both struggle with it in the same way. What should you conclude?', opts:['Both classmates made the same mistake by accident','The design itself likely needs to change','The prototype should be thrown away completely','Nothing — one test doesn\'t matter'], answer:1, explain:'When <b>different people hit the same problem</b>, it usually points to the design, not the users — that\'s a signal to iterate.'},
+    // Spatial & Mechanical — hard
+    {cat:'spatial', catName:'Spatial & Mechanical', diff:'hard', q:'Three gears are meshed in a row: Gear 1, Gear 2, Gear 3. Gear 1 turns clockwise. Which way does Gear 3 turn?', opts:['Clockwise','Anticlockwise','It stays still','It turns in both directions'], answer:0, explain:'Direction flips with each meshed gear: 1→2 flips once, 2→3 flips again — two flips cancel out, so Gear 3 turns the <b>same way as Gear 1</b>: clockwise.'},
+    {cat:'spatial', catName:'Spatial & Mechanical', diff:'hard', q:'On a standard six-sided die, opposite faces always add up to 7. If one face shows 4, what does the opposite face show?', opts:['2','3','5','6'], answer:1, explain:'7 − 4 = <b>3</b>. (Other pairs: 1–6, 2–5.)'},
+    {cat:'spatial', catName:'Spatial & Mechanical', diff:'hard', q:'Which pulley setup reduces the EFFORT needed to lift a load, not just the direction of pull?', opts:['A single fixed pulley','A movable pulley','A pulley with no rope','Any pulley, they are all identical'], answer:1, explain:'A <b>fixed pulley</b> only changes direction, no effort saved. A <b>movable pulley</b> actually shares the load, cutting the effort roughly in half.'},
+    {cat:'spatial', catName:'Spatial & Mechanical', diff:'hard', q:'You hold up your right hand in front of a mirror. Which hand does it look like in the reflection?', opts:['Still a right hand','A left hand','Both hands at once','No hand, mirrors don\'t reverse hands'], answer:1, explain:'A mirror flips <b>left and right</b> (not up and down) — so your right hand appears as a <b>left hand</b> in the reflection.'},
+    // Bonus brain-teasers
+    {cat:'bonus', catName:'Bonus Brain-Teaser', diff:'bonus', q:'A farmer must cross a river with a fox, a chicken, and a bag of grain — carrying only one at a time. He can\'t leave the fox alone with the chicken, or the chicken alone with the grain. What should he take across FIRST?', opts:['The fox','The chicken','The grain','It doesn\'t matter'], answer:1, explain:'He must take the <b>chicken</b> first — leaving the fox with the grain is safe, since foxes don\'t eat grain. Any other first move leaves something being eaten.'},
+    {cat:'bonus', catName:'Bonus Brain-Teaser', diff:'bonus', q:'If today is Wednesday, what day of the week was it exactly 100 days ago?', opts:['Sunday','Monday','Tuesday','Friday'], answer:1, explain:'100 ÷ 7 leaves a remainder of 2. Counting back 2 days from Wednesday gives <b>Monday</b>.'},
+    {cat:'bonus', catName:'Bonus Brain-Teaser', diff:'bonus', q:'You have an empty 3-litre jug and a full 5-litre jug (no markings on either). You pour from the 5-litre jug into the 3-litre jug until the 3-litre jug is completely full. How much water is left in the 5-litre jug?', opts:['1 litre','2 litres','3 litres','4 litres'], answer:1, explain:'5 litres poured until 3 litres fill the smaller jug leaves <b>2 litres</b> behind — the key first step in the classic jug-measuring puzzle.'},
+    {cat:'bonus', catName:'Bonus Brain-Teaser', diff:'bonus', q:'A gear train has 4 gears in a row, numbered 1 to 4. Gear 1 turns clockwise. Which other gear(s) turn clockwise?', opts:['Gear 2 only','Gear 3 only','Gears 2 and 4','No other gear turns clockwise'], answer:1, explain:'Direction alternates with every gear: 1-clockwise, 2-anticlockwise, 3-clockwise, 4-anticlockwise. Among the OTHER gears, only <b>Gear 3</b> matches Gear 1\'s direction.'},
+    {cat:'bonus', catName:'Bonus Brain-Teaser', diff:'bonus', q:'Your team has three good project ideas but only enough budget to build one prototype. What is the BEST way to decide which one?', opts:['The most confident teammate picks their favourite','Build all three anyway and worry about budget later','Quickly test all three with cheap paper sketches or mock-ups first, then commit to the strongest one','Choose the idea that took the least time to think of'], answer:2, explain:'Testing ideas <b>cheaply before committing</b> resources is core design thinking — it reveals which idea actually solves the user\'s problem before spending the real budget.'}
+  ];
+
+  let idx = 0, score = 0, answered = false;
+  const catScores = {};
+  questions.forEach(q=>{ if(!catScores[q.cat]) catScores[q.cat]={correct:0,total:0,name:q.catName}; catScores[q.cat].total++; });
+
+  const qText = document.getElementById('qText');
+  const optionsEl = document.getElementById('options');
+  const explainEl = document.getElementById('explain');
+  const nextBtn = document.getElementById('nextBtn');
+  const gaugeFill = document.getElementById('gaugeFill');
+  const gaugeLabel = document.getElementById('gaugeLabel');
+  const scoreLive = document.getElementById('scoreLive');
+  const catChip = document.getElementById('catChip');
+  const diffChip = document.getElementById('diffChip');
+  const quizArea = document.getElementById('quizArea');
+  const resultsEl = document.getElementById('results');
+
+  function render(){
+    const item = questions[idx];
+    answered = false;
+    nextBtn.disabled = true;
+    nextBtn.textContent = idx === questions.length-1 ? 'See Results →' : 'Next →';
+    explainEl.classList.remove('show');
+    explainEl.innerHTML = '';
+    catChip.innerHTML = `${icons[item.cat]}<span>${item.catName}</span>`;
+    diffChip.textContent = item.diff === 'bonus' ? 'Bonus' : 'Hard';
+    diffChip.className = 'diff-chip' + (item.diff === 'bonus' ? ' bonus' : '');
+    qText.textContent = item.q;
+    gaugeLabel.textContent = `Q ${idx+1} / ${questions.length}`;
+    gaugeFill.style.width = `${(idx/questions.length)*100}%`;
+    scoreLive.textContent = `Score: ${score}`;
+
+    optionsEl.innerHTML = '';
+    const letters = ['A','B','C','D'];
+    item.opts.forEach((opt,i)=>{
+      const b = document.createElement('button');
+      b.className = 'opt';
+      b.innerHTML = `<span class="letter">${letters[i]}</span><span>${opt}</span>`;
+      b.addEventListener('click', ()=>select(i,b));
+      optionsEl.appendChild(b);
+    });
+  }
+
+  function select(i, btn){
+    if(answered) return;
+    answered = true;
+    const item = questions[idx];
+    const correct = i === item.answer;
+    if(correct){ score++; catScores[item.cat].correct++; }
+    [...optionsEl.children].forEach((b,j)=>{
+      b.disabled = true;
+      if(j === item.answer) b.classList.add('correct');
+      else if(j === i) b.classList.add('wrong');
+    });
+    explainEl.innerHTML = (correct ? '<b>Correct!</b> ' : '<b>Not quite.</b> ') + item.explain;
+    explainEl.classList.add('show');
+    scoreLive.textContent = `Score: ${score}`;
+    nextBtn.disabled = false;
+  }
+
+  nextBtn.addEventListener('click', ()=>{
+    if(idx < questions.length - 1){ idx++; render(); }
+    else { finish(); }
+  });
+
+  function finish(){
+    gaugeFill.style.width = '100%';
+    gaugeLabel.textContent = `Q ${questions.length} / ${questions.length}`;
+    quizArea.style.display = 'none';
+    resultsEl.classList.add('show');
+    const pct = Math.round((score/questions.length)*100);
+    document.getElementById('finalScore').textContent = `${score} / ${questions.length}`;
+    const stamp = document.getElementById('stamp');
+    const msg = document.getElementById('finalMsg');
+    if(pct >= 85){ stamp.textContent = 'Ready For Selection'; stamp.style.borderColor='var(--circuit)'; stamp.style.color='var(--circuit)'; msg.textContent = 'Strong result on the harder set — this is genuine readiness, not just memorised facts.'; }
+    else if(pct >= 60){ stamp.textContent = 'Nearly There'; stamp.style.borderColor='var(--copper)'; stamp.style.color='var(--copper)'; msg.textContent = 'Good progress on hard mode. Re-open the cheat sheet for the weakest category below and retake just that section mentally.'; }
+    else { stamp.textContent = 'Keep Drilling'; stamp.style.borderColor='var(--blueprint)'; stamp.style.color='var(--blueprint)'; msg.textContent = 'Hard mode is meant to feel tough. Revisit the cheat sheets once more, then retake — most of these lock in on the second pass.'; }
+
+    const catBars = document.getElementById('catBars');
+    catBars.innerHTML = '';
+    Object.values(catScores).forEach(c=>{
+      const p = Math.round((c.correct/c.total)*100);
+      const row = document.createElement('div');
+      row.className = 'cat-bar-row';
+      row.innerHTML = `<span class="cbl">${c.name}</span><div class="cat-bar-track"><div class="cat-bar-fill" style="width:${p}%"></div></div><span class="cbv mono">${c.correct}/${c.total}</span>`;
+      catBars.appendChild(row);
+    });
+  }
+
+  document.getElementById('restartBtn').addEventListener('click', ()=>{
+    idx = 0; score = 0;
+    Object.values(catScores).forEach(c=>c.correct=0);
+    resultsEl.classList.remove('show');
+    quizArea.style.display = 'block';
+    render();
+  });
+
+  render();
+
+  // ---------------- Session timer ----------------
+  let totalSeconds = 30*60;
+  let remaining = totalSeconds;
+  let running = false;
+  let tickHandle = null;
+
+  const clockDisplay = document.getElementById('clockDisplay');
+  const startPauseBtn = document.getElementById('startPauseBtn');
+  const resetBtn = document.getElementById('resetBtn');
+  const pick30 = document.getElementById('pick30');
+  const pick45 = document.getElementById('pick45');
+  const phaseRail = document.getElementById('phaseRail');
+  const phaseLabels = document.getElementById('phaseLabels');
+
+  const phases = [
+    {label:'Revise', pct:0.28},
+    {label:'Hard Quiz', pct:0.52},
+    {label:'Bonus + Review', pct:0.20}
+  ];
+
+  function buildPhaseUI(){
+    phaseRail.innerHTML = '';
+    phaseLabels.innerHTML = '';
+    phases.forEach(p=>{
+      const seg = document.createElement('div');
+      seg.className = 'phase-seg';
+      seg.style.width = (p.pct*100) + '%';
+      seg.innerHTML = '<div class="fill"></div>';
+      phaseRail.appendChild(seg);
+      const lab = document.createElement('span');
+      lab.style.width = (p.pct*100) + '%';
+      lab.textContent = p.label + ' (' + Math.round(p.pct*totalSeconds/60) + 'm)';
+      phaseLabels.appendChild(lab);
+    });
+  }
+
+  function formatTime(s){
+    const m = Math.floor(s/60);
+    const sec = s%60;
+    return String(m).padStart(2,'0') + ':' + String(sec).padStart(2,'0');
+  }
+
+  function updateDisplay(){
+    clockDisplay.textContent = formatTime(Math.max(0,remaining));
+    const elapsed = totalSeconds - remaining;
+    let acc = 0;
+    const segs = [...phaseRail.children];
+    const labs = [...phaseLabels.children];
+    phases.forEach((p,i)=>{
+      const segStart = acc;
+      const segLen = p.pct*totalSeconds;
+      acc += segLen;
+      const fillEl = segs[i].querySelector('.fill');
+      let localPct = 0;
+      if(elapsed >= segStart + segLen) localPct = 100;
+      else if(elapsed > segStart) localPct = ((elapsed-segStart)/segLen)*100;
+      fillEl.style.width = localPct + '%';
+      labs[i].classList.toggle('on', elapsed >= segStart && elapsed < segStart+segLen);
+    });
+    if(remaining <= 0){
+      clockDisplay.textContent = "00:00";
+      startPauseBtn.textContent = 'Start';
+      running = false;
+      clearInterval(tickHandle);
+    }
+  }
+
+  function setDuration(mins){
+    totalSeconds = mins*60;
+    remaining = totalSeconds;
+    running = false;
+    clearInterval(tickHandle);
+    startPauseBtn.textContent = 'Start';
+    pick30.classList.toggle('active', mins===30);
+    pick45.classList.toggle('active', mins===45);
+    buildPhaseUI();
+    updateDisplay();
+  }
+
+  startPauseBtn.addEventListener('click', ()=>{
+    if(running){
+      running = false;
+      startPauseBtn.textContent = 'Resume';
+      clearInterval(tickHandle);
+    } else {
+      if(remaining <= 0) remaining = totalSeconds;
+      running = true;
+      startPauseBtn.textContent = 'Pause';
+      tickHandle = setInterval(()=>{
+        remaining--;
+        updateDisplay();
+      }, 1000);
+    }
+  });
+
+  resetBtn.addEventListener('click', ()=>{ setDuration(totalSeconds/60); });
+  pick30.addEventListener('click', ()=>setDuration(30));
+  pick45.addEventListener('click', ()=>setDuration(45));
+
+  setDuration(30);
+})();
+</script>
