@@ -129,6 +129,38 @@
       font-size: .95rem;
     }
 
+    .promo-link {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      margin: 0 0 22px;
+      padding: 16px 20px;
+      border: 1px solid rgba(255,159,28,.35);
+      border-radius: 16px;
+      background: linear-gradient(120deg, #fff3d6, #ffe8c2);
+      color: var(--ink);
+      text-decoration: none;
+      box-shadow: 0 8px 22px rgba(255,159,28,.12);
+      transition: transform .15s ease, box-shadow .15s ease;
+    }
+
+    .promo-link:hover { transform: translateY(-1px); box-shadow: 0 12px 26px rgba(255,159,28,.18); }
+    .promo-link strong { display: block; font-size: 1rem; }
+    .promo-link .sub { display: block; margin-top: 2px; color: var(--muted); font-size: .86rem; font-weight: 500; }
+
+    .promo-link .arrow {
+      flex: 0 0 auto;
+      display: grid;
+      place-items: center;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: var(--orange);
+      color: white;
+      font-weight: 900;
+    }
+
     .framework {
       display: grid;
       grid-template-columns: repeat(5, 1fr);
